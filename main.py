@@ -4,11 +4,11 @@ from tkinter import Tk, Button, Entry
 root = Tk()
 root.title("Calculadora POO")
 root.resizable(0,0)
-root.geometry("500x250")  # Tamaño de la ventana
+root.geometry("300x250")  # Tamaño de la ventana
 
 # Configuración pantalla de salida 
 pantalla = Entry(root, width=40, bg="black", fg="white", borderwidth=0, font=("arial", 18, "bold"))
-pantalla.grid(row=0, column=0, columnspan=4, padx=1, pady=0)   #pady, columspan is
+pantalla.grid(row=0, column=0, columnspan=100, padx=1, pady=0)   #pady, columspan is
 
 # Configuración botones
 boton_1 = Button(root, text="1", width=9, height=3, bg="white", fg="red", borderwidth=0, cursor="hand2")
@@ -44,27 +44,26 @@ boton_division.grid(row=4, column=3, padx=1, pady=1) #row=***, column=***, pady=
 
 #Funciones para los botones
 
+operacionTerminada = False #Esto es para saber si la operación ya terminó, para poder borrar la pantalla si se presiona un número después de obtener el resultado
+
 def ingresar_valor(evento):
+    global operacionTerminada
+    if operacionTerminada == True:
+        pantalla.delete(0, len(pantalla.get())) #Borrar el contenido de la pantalla
     pantalla.insert(len(pantalla.get()), evento.widget["text"]) #evento.widget["text"] es el texto del botón que se presionó
+    operacionTerminada = False
     
 def obtenerResultado(evento):
+    global operacionTerminada
     try:
         resultado = eval(pantalla.get()) #eval() evalúa la expresión matemática
         pantalla.delete(0, len(pantalla.get())) #Borrar el contenido de la pantalla
         pantalla.insert(0, resultado) #Mostrar el resultado en la pantalla
+        operacionTerminada = True
     except:
         pantalla.delete(0, len(pantalla.get())) #Borrar el contenido de la pantalla
         pantalla.insert(0, "Error") #Mostrar "Error" en la pantalla
-        
-#Trato de limpiar la pantalla si no hay operaciones pendientes
-def limpiar_pantalla(evento):
-    limpiar = False
-    if any(i in pantalla.get() for i in ["+", "-", "*", "/"]):
-        limpiar = False
-    else:
-        limpiar = True
-    if limpiar == True:      
-        pantalla.delete(0, len(pantalla.get())) #Borrar el contenido de la pantalla
+        operacionTerminada = True
     
     
 #Asociar los botones con las funciones
