@@ -8,7 +8,7 @@ root.geometry("300x250")  # Tamaño de la ventana
 
 # Configuración pantalla de salida 
 pantalla = Entry(root, width=40, bg="black", fg="white", borderwidth=0, font=("arial", 18, "bold"))
-pantalla.grid(row=0, column=0, columnspan=100, padx=1, pady=0)   #pady, columspan is
+pantalla.grid(row=0, column=0, columnspan=100, padx=1, pady=0)   #pady, columspan es 100 para que se viera bien en pantalla, pero no tengo claro porque se tuesta si no
 
 # Configuración botones
 boton_1 = Button(root, text="1", width=9, height=3, bg="white", fg="red", borderwidth=0, cursor="hand2")
@@ -56,7 +56,7 @@ def ingresar_valor(evento):
 def obtenerResultado(evento):
     global operacionTerminada
     try:
-        resultado = eval(pantalla.get()) #eval() evalúa la expresión matemática
+        resultado = eval(pantalla.get()) #eval() evalúa la expresión matemática, porque no explicaron esto claro en clase y me tocó investigar la librería
         pantalla.delete(0, len(pantalla.get())) #Borrar el contenido de la pantalla
         pantalla.insert(0, resultado) #Mostrar el resultado en la pantalla
         operacionTerminada = True
@@ -84,11 +84,10 @@ boton_multiplicacion.bind("<Button-1>", ingresar_valor)
 boton_division.bind("<Button-1>", ingresar_valor)
 
 boton_igual.bind("<Button-1>", obtenerResultado)
-#boton_igual.bind("<Button-1>", limpiar_pantalla, add="+") #add="+" para agregar la función a las que ya tiene asociada
 
 
 root.mainloop()
-#Luego reviso como limpiar la pantalla si no hay operaciones pendientes, o después de obtener el resultado
+#Pude hacer que se limpie la pantalla si no hay operaciones pendientes, o después de obtener el resultado
 #o si se presiona un número después de obtener el resultado
 #o si se presiona un operador después de obtener el resultado
 #o si hay un error
