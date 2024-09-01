@@ -42,13 +42,10 @@ boton_multiplicacion.grid(row=3, column=3, padx=1, pady=1) #row=***, column=***
 boton_division = Button(root, text="/", width=9, height=3, bg="deep sky blue", fg="black", borderwidth=0, cursor="hand2")
 boton_division.grid(row=4, column=3, padx=1, pady=1) #row=***, column=***, pady=***
 
-root.mainloop()
-
 #Funciones para los botones
 
 def ingresar_valor(evento):
     pantalla.insert(len(pantalla.get()), evento.widget["text"]) #evento.widget["text"] es el texto del botón que se presionó
-    print(pantalla.get())
     
 def obtenerResultado(evento):
     try:
@@ -59,8 +56,15 @@ def obtenerResultado(evento):
         pantalla.delete(0, len(pantalla.get())) #Borrar el contenido de la pantalla
         pantalla.insert(0, "Error") #Mostrar "Error" en la pantalla
         
+#Trato de limpiar la pantalla si no hay operaciones pendientes
 def limpiar_pantalla(evento):
-    pantalla.delete(0, len(pantalla.get())) #Borrar el contenido de la pantalla
+    limpiar = False
+    if any(i in pantalla.get() for i in ["+", "-", "*", "/"]):
+        limpiar = False
+    else:
+        limpiar = True
+    if limpiar == True:      
+        pantalla.delete(0, len(pantalla.get())) #Borrar el contenido de la pantalla
     
     
 #Asociar los botones con las funciones
@@ -81,6 +85,12 @@ boton_multiplicacion.bind("<Button-1>", ingresar_valor)
 boton_division.bind("<Button-1>", ingresar_valor)
 
 boton_igual.bind("<Button-1>", obtenerResultado)
+#boton_igual.bind("<Button-1>", limpiar_pantalla, add="+") #add="+" para agregar la función a las que ya tiene asociada
 
-#No me deja agregar el valor de los botones que presiono en la pantalla
-#No me deja obtener el resultado de la operación
+
+root.mainloop()
+#Luego reviso como limpiar la pantalla si no hay operaciones pendientes, o después de obtener el resultado
+#o si se presiona un número después de obtener el resultado
+#o si se presiona un operador después de obtener el resultado
+#o si hay un error
+#o si se presiona un número después de un error
